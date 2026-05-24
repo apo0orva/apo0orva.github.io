@@ -132,6 +132,7 @@
     display: flex;
     gap: 1rem;
     align-items: center;
+    flex-wrap: wrap;
     opacity: 0;
     animation: fadeUp 0.9s ease 0.8s forwards;
   }
@@ -167,6 +168,15 @@
   }
 
   .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+  .link-inline {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(200,240,77,0.3);
+    transition: border-color 0.2s;
+  }
+  
+  .link-inline:hover { border-color: var(--accent); }
 
   /* Section base */
   section { padding: 7rem 4rem; border-top: 1px solid var(--border); }
@@ -237,41 +247,50 @@
 
   .skill-group:hover .skill-tag { border-color: rgba(200,240,77,0.2); color: var(--text); }
 
-  /* Projects */
-  .projects-list { display: flex; flex-direction: column; }
+  /* Lists (Experience & Projects) */
+  .item-list { display: flex; flex-direction: column; }
 
-  .project-item {
+  .list-item {
     display: grid;
-    grid-template-columns: 3rem 1fr auto;
+    grid-template-columns: 1fr auto;
     gap: 2rem;
     align-items: start;
     padding: 2.5rem 0;
     border-bottom: 1px solid var(--border);
-    text-decoration: none;
     color: inherit;
-    cursor: pointer;
   }
 
-  .project-item:first-child { border-top: 1px solid var(--border); }
-  .project-item:hover .project-title { color: var(--accent); }
-  .project-item:hover .project-arrow { transform: translate(4px, -4px); color: var(--accent); }
+  a.list-item { text-decoration: none; cursor: pointer; }
+  a.list-item:hover .item-title { color: var(--accent); }
+  a.list-item:hover .item-arrow { transform: translate(4px, -4px); color: var(--accent); }
 
-  .project-num { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); padding-top: 0.3rem; }
+  .list-item:first-child { border-top: 1px solid var(--border); }
 
-  .project-title {
+  .item-meta { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); padding-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  .item-title {
     font-family: var(--serif);
     font-size: 1.6rem;
     font-weight: 400;
     line-height: 1.2;
     transition: color 0.2s;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.3rem;
   }
 
-  .project-desc { font-size: 0.9rem; color: var(--muted); max-width: 55ch; line-height: 1.6; margin-bottom: 1rem; }
+  .item-subtitle {
+    font-size: 1rem;
+    color: var(--text);
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
 
-  .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .item-desc { font-size: 0.9rem; color: var(--muted); max-width: 65ch; line-height: 1.6; margin-bottom: 1rem; }
+  .item-desc ul { margin-left: 1.2rem; margin-top: 0.5rem; }
+  .item-desc li { margin-bottom: 0.4rem; }
 
-  .project-tag {
+  .item-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  .item-tag {
     font-family: var(--mono);
     font-size: 0.65rem;
     letter-spacing: 0.1em;
@@ -281,7 +300,26 @@
     padding: 0.25rem 0.6rem;
   }
 
-  .project-arrow { font-size: 1.4rem; color: var(--muted); transition: transform 0.2s, color 0.2s; padding-top: 0.2rem; }
+  .item-arrow { font-size: 1.4rem; color: var(--muted); transition: transform 0.2s, color 0.2s; padding-top: 0.2rem; }
+
+  /* Certifications */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .cert-card {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border-color 0.2s;
+  }
+  
+  .cert-card:hover { border-color: rgba(200,240,77,0.3); }
+
+  .cert-title { font-size: 1.1rem; font-weight: 500; color: var(--text); margin-bottom: 0.5rem; }
+  .cert-issuer { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
 
   /* Contact */
   .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
@@ -377,12 +415,13 @@
   /* Responsive */
   @media (max-width: 800px) {
     nav { padding: 1.25rem 1.5rem; }
-    .nav-links { gap: 1.5rem; }
+    .nav-links { display: none; } 
     section { padding: 5rem 1.5rem; }
     .hero { padding: 0 1.5rem 4rem; }
     .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
     footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
-    .project-item { grid-template-columns: 2.5rem 1fr 1.5rem; gap: 1rem; }
+    .list-item { grid-template-columns: 1fr; gap: 1rem; }
+    .item-arrow { display: none; }
   }
 </style>
 </head>
@@ -393,6 +432,7 @@
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -404,8 +444,9 @@
   <h1>Hi, I'm <em>Apoorva</em> — an IT &amp; Network Tech.</h1>
   <p class="hero-sub">IT support and network technician with hands-on experience administering Windows and Linux environments, configuring Cisco infrastructure, and keeping multi-user systems running reliably.</p>
   <div class="hero-cta">
-    <a href="#projects" class="btn-primary">View My Work</a>
-    <a href="#contact" class="btn-ghost">Get in Touch</a>
+    <a href="#experience" class="btn-primary">View Experience</a>
+    <a href="Profile.pdf" download="Apoorva_Jadhav_Resume.pdf" class="btn-ghost" target="_blank" rel="noopener">Download Resume</a>
+    <a href="#contact" class="btn-ghost" style="border: none; padding-left: 0.5rem;">Get in Touch</a>
   </div>
 </section>
 
@@ -419,6 +460,9 @@
       </p>
       <p>
         My practical experience centers around managing Active Directory, VLANs, OSPFv2, and Jamf device management. Whether I'm resolving network incidents on the spot or configuring Cisco infrastructure, my focus is always on reducing downtime, proactive troubleshooting, and reliable service delivery.
+      </p>
+      <p style="margin-top: 2rem;">
+        <a href="Profile.pdf" download="Apoorva_Jadhav_Resume.pdf" class="link-inline" target="_blank" rel="noopener">↓ Download my full resume</a>
       </p>
     </div>
     <div class="about-stats reveal">
@@ -489,57 +533,179 @@
   </div>
 </section>
 
+<section id="experience">
+  <p class="section-label reveal">03 — Experience</p>
+  <h2 class="section-title reveal">Where I've <em style="font-style:italic;">worked</em></h2>
+  <div class="item-list">
+
+    <div class="list-item reveal">
+      <div>
+        <p class="item-meta">Jan 2025 — Apr 2025</p>
+        <h3 class="item-title">Laboratory Monitor</h3>
+        <p class="item-subtitle">University of the Fraser Valley</p>
+        <div class="item-desc">
+          <ul>
+            <li>Administered directory services, network file systems, and shared resources across 50+ endpoints in a multi-user Windows and Linux environment.</li>
+            <li>Reduced service interruptions by ~30% through proactive endpoint monitoring and structured maintenance routines.</li>
+            <li>Resolved 80-90% of authentication, access control, and service availability incidents during live lab sessions without escalation.</li>
+          </ul>
+        </div>
+        <div class="item-tags">
+          <span class="item-tag">Windows / Linux</span>
+          <span class="item-tag">Active Directory</span>
+          <span class="item-tag">Network Diagnostics</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-item reveal">
+      <div>
+        <p class="item-meta">Sept 2024 — Apr 2025</p>
+        <h3 class="item-title">Peer Tutor & Lounge Leader</h3>
+        <p class="item-subtitle">University of the Fraser Valley</p>
+        <div class="item-desc">
+          <ul>
+            <li>Coached 30+ students through computer hardware fundamentals via 1:1 and small-group instruction, improving hands-on lab completion rates.</li>
+            <li>Built and documented step-by-step troubleshooting workflows that reduced student lab error rates by ~15%.</li>
+            <li>Delivered frontline support to 50+ students daily, managing resource allocation and issue resolution in a high-traffic environment.</li>
+          </ul>
+        </div>
+        <div class="item-tags">
+          <span class="item-tag">Hardware Diagnostics</span>
+          <span class="item-tag">Technical Support</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-item reveal">
+      <div>
+        <p class="item-meta">Nov 2023 — May 2026</p>
+        <h3 class="item-title">Area Manager & Crew Trainer</h3>
+        <p class="item-subtitle">McDonald's</p>
+        <div class="item-desc">
+          <ul>
+            <li>Oversaw daily operations across a high-volume location, managing team performance, service standards, and escalation resolution.</li>
+            <li>Lead cross-functional coordination between crew, training, and management—directly analogous to IT team environments requiring clear communication under pressure.</li>
+            <li>Mentored new team members, ensuring adherence to safety, hygiene, and quality standards.</li>
+          </ul>
+        </div>
+        <div class="item-tags">
+          <span class="item-tag">Leadership</span>
+          <span class="item-tag">Escalation Resolution</span>
+          <span class="item-tag">Training</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-item reveal">
+      <div>
+        <p class="item-meta">May 2022 — Aug 2022</p>
+        <h3 class="item-title">WordPress Developer</h3>
+        <p class="item-subtitle">Solutions HUB 360 & SkillBless</p>
+        <div class="item-desc">
+          <ul>
+            <li>Designed and developed a responsive Job Portal using Elementor, WP-Jobs Manager, and Everest Forms.</li>
+            <li>Conducted keyword research to optimize SEO performance, boosting content visibility.</li>
+            <li>Developed content strategies for consistent messaging and brand identity.</li>
+          </ul>
+        </div>
+        <div class="item-tags">
+          <span class="item-tag">WordPress</span>
+          <span class="item-tag">Elementor</span>
+          <span class="item-tag">SEO</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <section id="projects">
-  <p class="section-label reveal">03 — Projects</p>
+  <p class="section-label reveal">04 — Projects</p>
   <h2 class="section-title reveal">Selected <em style="font-style:italic;">work</em></h2>
-  <div class="projects-list">
+  <div class="item-list">
 
-    <a class="project-item reveal" href="#" target="_blank" rel="noopener">
-      <span class="project-num">01</span>
+    <a class="list-item reveal" href="#" target="_blank" rel="noopener">
       <div>
-        <h3 class="project-title">Multi-Site Enterprise Network</h3>
-        <p class="project-desc">A comprehensive network simulation covering OSPFv2 routing, Layer 2 security, and DHCP automation. Validated configurations of TCP/IP, subnetting, and routing protocols aligned with production networking standards.</p>
-        <div class="project-tags">
-          <span class="project-tag">OSPFv2</span>
-          <span class="project-tag">Cisco</span>
-          <span class="project-tag">DHCP</span>
+        <h3 class="item-title">Multi-Site Enterprise Network</h3>
+        <p class="item-desc">A comprehensive network simulation covering OSPFv2 routing, Layer 2 security, and DHCP automation. Validated configurations of TCP/IP, subnetting, and routing protocols aligned with production networking standards.</p>
+        <div class="item-tags">
+          <span class="item-tag">OSPFv2</span>
+          <span class="item-tag">Cisco</span>
+          <span class="item-tag">DHCP</span>
         </div>
       </div>
-      <span class="project-arrow">↗</span>
+      <span class="item-arrow">↗</span>
     </a>
 
-    <a class="project-item reveal" href="#" target="_blank" rel="noopener">
-      <span class="project-num">02</span>
+    <a class="list-item reveal" href="#" target="_blank" rel="noopener">
       <div>
-        <h3 class="project-title">Lab Infrastructure Diagnostic Workflows</h3>
-        <p class="project-desc">Built and documented step-by-step troubleshooting workflows that successfully reduced student lab error rates by ~15%, fostering independent diagnostic skills for identifying hardware and software faults.</p>
-        <div class="project-tags">
-          <span class="project-tag">Systems Diagnostics</span>
-          <span class="project-tag">Technical Documentation</span>
+        <h3 class="item-title">Lab Infrastructure Diagnostic Workflows</h3>
+        <p class="item-desc">Built and documented step-by-step troubleshooting workflows that successfully reduced student lab error rates by ~15%, fostering independent diagnostic skills for identifying hardware and software faults.</p>
+        <div class="item-tags">
+          <span class="item-tag">Systems Diagnostics</span>
+          <span class="item-tag">Technical Documentation</span>
         </div>
       </div>
-      <span class="project-arrow">↗</span>
+      <span class="item-arrow">↗</span>
     </a>
 
-    <a class="project-item reveal" href="http://www.trainee.skillbless.in.net" target="_blank" rel="noopener">
-      <span class="project-num">03</span>
+    <a class="list-item reveal" href="http://www.trainee.skillbless.in.net" target="_blank" rel="noopener">
       <div>
-        <h3 class="project-title">SkillBless Job Portal</h3>
-        <p class="project-desc">Designed and developed a responsive Job Portal utilizing aesthetic color palettes and dynamic plugins to handle job listings and form interactions effectively.</p>
-        <div class="project-tags">
-          <span class="project-tag">WordPress</span>
-          <span class="project-tag">Elementor</span>
-          <span class="project-tag">WP-Jobs Manager</span>
+        <h3 class="item-title">SkillBless Job Portal</h3>
+        <p class="item-desc">Designed and developed a responsive Job Portal utilizing aesthetic color palettes and dynamic plugins to handle job listings and form interactions effectively.</p>
+        <div class="item-tags">
+          <span class="item-tag">WordPress</span>
+          <span class="item-tag">Elementor</span>
+          <span class="item-tag">WP-Jobs Manager</span>
         </div>
       </div>
-      <span class="project-arrow">↗</span>
+      <span class="item-arrow">↗</span>
     </a>
 
   </div>
 </section>
 
+<section id="certifications">
+  <p class="section-label reveal">05 — Certifications & Awards</p>
+  <h2 class="section-title reveal">Continuous <em style="font-style:italic;">learning</em></h2>
+  <div class="cert-grid reveal">
+    
+    <div class="cert-card">
+      <h3 class="cert-title">IELTS Academic (Band 7.0)</h3>
+      <p class="cert-issuer">Language Proficiency</p>
+    </div>
+    
+    <div class="cert-card">
+      <h3 class="cert-title">NoSQL Essential Training</h3>
+      <p class="cert-issuer">Database Management</p>
+    </div>
+
+    <div class="cert-card">
+      <h3 class="cert-title">PHP with MySQL</h3>
+      <p class="cert-issuer">Backend Development</p>
+    </div>
+
+    <div class="cert-card">
+      <h3 class="cert-title">Learning REST APIs</h3>
+      <p class="cert-issuer">API Integration</p>
+    </div>
+
+    <div class="cert-card">
+      <h3 class="cert-title">HTML Essential Training</h3>
+      <p class="cert-issuer">Frontend Development</p>
+    </div>
+
+    <div class="cert-card">
+      <h3 class="cert-title">Dean's List</h3>
+      <p class="cert-issuer">Academic Excellence (2021-22)</p>
+    </div>
+
+  </div>
+</section>
+
 <section id="contact">
-  <p class="section-label reveal">04 — Contact</p>
+  <p class="section-label reveal">06 — Contact</p>
   <div class="contact-inner">
     <div class="contact-text reveal">
       <h2 class="section-title">Let's work <em style="font-style:italic;">together</em></h2>
